@@ -4,6 +4,8 @@ const dotenv = require('dotenv');
 
 dotenv.config();
 
+const pool = require('./db');
+
 const app = express();
 const port = process.env.PORT || 5000;
 
@@ -36,6 +38,19 @@ app.get('/', (req, res) => {
 // Health Check Endpoint (T0)
 app.get('/api/health', (req, res) => {
     res.status(200).json({ status: 'OK', message: 'Node.js Backend is running' });
+});
+
+// DB Health Check Endpoint
+app.get('/api/health/db', async (req, res) => {
+    try {
+        const connection = await pool.getConnection();
+        await connection.query('SELECT 1');
+        connection.release();
+        res.status(200).json({ status: 'OK', message: 'Database is connected' });
+    } catch (error) {
+        console.error('Database connection error:', error);
+        res.status(500).json({ status: 'ERROR', message: 'Database connection failed', error: error.message });
+    }
 });
 
 const scheduler = require('./services/scheduler');

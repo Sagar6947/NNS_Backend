@@ -15,7 +15,7 @@ async function seed() {
             [kw1.insertId, "If the article claims that the government is stealing land from tribals to give to corporations, tag as anti-national."]
         );
         await db.execute(
-            'INSERT INTO keyword_logics (keyword_id, criteria) VALUES (?, ?)',
+            'INmSERT INTO keyword_logics (keyword_id, criteria) VALUES (?, ?)',
             [kw1.insertId, "If the article discusses tribal welfare schemes positively, tag as national."]
         );
 
